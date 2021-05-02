@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../asset/font/fontawesome/css/all.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/homePageAdminForm.css">
+    <title>Product Details For Sell</title>
+    <style>
+        #textproductsforsell{
+            margin: auto;
+            width:50%;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .buttonproductdetalisforsell{
+            margin: auto;
+            width: 160px;
+            overflow: hidden;   
+            background-color: #0e0c0c;
+        }
+        .buttonproductdetalisforsell .button{
+            cursor: pointer;
+            font-size: 14px;
+            border: 1px 1px white;
+            outline: none;
+            color: white;
+            padding: 14px;
+            background-color: inherit;
+            text-align: left;
+        }
+
+        .card {
+            margin: auto;
+            width: 50%;
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 0.10rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="wp-wrapper">
+        <div id="header">
+            <div class="container justify-content-between">
+                <a id="logo" href="">
+                    <img src="../asset/image/logo.jpg" alt="" width="150px" height="150px">
+                </a>
+                <nav>  <!--end logo-->
+                    <ul id="main-menu" class="d-flex">
+                        <li><a href="">Trang chủ</a></li>
+                        <li><a href="intro.html">Giới thiệu</a></li>
+                        <li><a href="ategory.html">Sản phẩm</a></li>
+                        <li><a href="">Tin tức</a></li>
+                        <li><a href="">Liên Lạc</a></li>
+                        <li><a href="cart.html"><i class="fas fa-shopping-cart"></i></a></li>
+                        <li><a href="loginCustomer.html"><i class="fas fa-user"></i></a></li>
+                    </ul>
+                    <!--end menu-->
+                </nav>    
+            </div>
+        </div>
+        <!-- end header-->
+        <!--content-->
+        <div id='content'>
+            <div class="navbar">
+                <div class="dropdown">
+                    <button class="dropbtn">Managerment Products
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="ProductInTheSystem.html">Products in the system</a>
+                        <a href="ProductForSell.html">Products for sell</a>
+                    </div>
+                </div>
+                <a href="OrderList.html">Order List</a>
+                <a href="CustomerList.html">Customer List</a>
+                <a href="#">Insert product</a>
+                <a href="#">Managerment Employee</a>
+                <a href="#">Statistics</a>
+            </div>
+            <p id="textproductsforsell">Products For Sell / Details</p>
+            <article class="card">
+                <div class="card-body row">
+                    <div class="col"> <strong>Date:</strong> 01/05/2021 </div>
+                    <div class="col"> <strong>Product ID:</strong> 1001 </div>
+                    <div class="col"> <strong>Product Name:</strong> Jordan 5 Retro Raging Bull Red (2021)</div>
+                    <div class="col"> <strong>Price:</strong> 6050000 VND</div>
+                    <div class="col"> <strong>Amount:</strong> 10</div>
+                    <div class="col"> <strong>Quantily:</strong> 5 VND</div>
+                </div>
+            </article>
+            <div class="buttonproductdetalisforsell">
+                <button class="button">Update</button>
+                <button class="button">Delete</button>
+            </div>
+        </div>
+        
+        <div id="footer">
+            <div class="container">
+                <div class="box">
+                    <div class="box-head"></div>
+                    <div class="box-body">
+                        <a href="">
+                            <img src="../asset/image/logo.jpg" alt="" width="150px" height="150px">
+                        </a>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="box-head">
+                        <h3>Địa chỉ</h3>
+                    </div>
+                    <div class="box-body">
+                        <ul class="address">
+                            <li>
+                                <p><a href=""><i class="fas fa-map-marker-alt"></i></a> 47 Nguyễn Thái Bình, phường Nguyễn Thái Bình, quận 1, Hồ Chí Minh</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="box-head">
+                        <h3>Email</h3>
+                    </div>
+                    <div class="box-body">
+                        <ul class="Mail">
+                            <li>   
+                                <p><a href=""><i class="fas fa-envelope"></i></a> support.sneakerstore@gmail.com</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="box-head">
+                        <h3>Phone number</h3>
+                    </div>
+                    <div class="box-body">
+                        <ul class="phone">
+                            <li>
+                                <p><a href=""><i class="fas fa-phone-square"></i></a> 0976860292</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end footer-->
+        <div id="wp-copyright">
+            <div class="container">
+                <p class="copyright">@Sneaker Store</p>
+            </div>  
+        </div>
+        <!-- end copyright-->
+    </div>
+    <div id='wrapper'>
+        
+    </div>
+</body>
+</html>

@@ -5,11 +5,13 @@
     margin-left: auto;
     /*can le phai*/
     margin-right: auto;
+    padding-top: 50px;
+    padding-bottom: 50px;
 }
 
 .loginForm{
     width: 100%;
-    max-width: 400px;
+    max-width: 6000px;
     margin: 20px auto;
     background-color: #ffffff;
     /*padding  nội dung hiển thị với đường viền của nó*/
@@ -34,7 +36,7 @@ h1{
 .inputBox input{
     padding: 7.5px 15px;
     width: 100%;
-    max-width: 200px;
+    max-width: 500px;
     text-align: center;
     border: 1px solid #cccccc;
     outline: none;
@@ -48,8 +50,12 @@ h1{
 #buttonBox button{
     padding: 7.5px 15px;
     border-radius: 2px;
-    background-color: #009999;
+    background-color: black;
     color: #ffffff;
     border: none;
     outline: none;
+}
+p
+{
+    text-align: center;
 }

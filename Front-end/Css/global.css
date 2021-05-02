@@ -1,0 +1,38 @@
+.justify-content-between
+{
+    justify-content: space-between;
+}
+.d-flex{
+    display: flex;
+}
+.justify-content-around
+{
+    justify-content: center;
+}
+.center
+{
+    text-align:center
+}
+.container1 {
+    width:100%;
+    text-align:center;
+}
+ 
+.left1 {
+    float:left;
+    width:100px;
+}
+ 
+.center1 {
+    display: inline-block;
+    margin:0 auto;
+    width:100px;
+}
+ 
+.right1 {
+    float:right;
+    width:100px;
+}
+.clearfix {
+  overflow: auto;
+}

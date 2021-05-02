@@ -1,0 +1,98 @@
+body{
+    font-family:"Open Sans" ;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+.container{
+    width: 1170px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 0px auto;
+    display: flex;
+    justify-content: space-between;
+    overflow: auto;
+}
+ul
+{
+    list-style: none;
+    padding: 0;
+}
+#header
+{
+    background:white;
+    padding-top: 25px;
+    padding-bottom: 10px;
+}
+form#search{
+   position: relative;
+   border: 2px;
+}
+form#search input
+{
+    background: white;
+    width: 500px;
+    padding: 9px 42px 9px 15px;
+}
+form#search button
+{
+   position: absolute;
+   top: 0px;
+   right: 0px;
+   background: none;
+   border:1px black;
+   color: black;
+   padding: 9px 12px;
+}
+
+ul#main-menu li a{
+
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+
+.box .box-body
+{
+    padding-top: 20px;
+}
+li{
+    display: list-item;
+    text-align: center;
+}
+ul.list-post{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    width: 100%
+}
+ul.list-post li
+{
+    width: 19%
+    border: 1% dashed #000;
+    margin: 5px
+    justify-content: space-between;
+}
+ul.list-post li img
+{
+    width: 100%;
+    float: left;
+}
+#footer
+{
+    background: #2e2f30;
+    padding-top: 52px;
+    padding-bottom: 75px;
+    color: white;
+}
+#footer .box .box-head h3
+{
+    background: none;
+    padding-left: 0;
+    padding-right: 0;
+
+}

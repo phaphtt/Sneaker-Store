@@ -1,0 +1,15 @@
+.justify-content-between
+{
+    justify-content: space-between;
+}
+.d-flex{
+    display: flex;
+}
+.justify-content-around
+{
+    justify-content: center;
+}
+.center
+{
+    text-align:center
+}
