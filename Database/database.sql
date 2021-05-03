@@ -1,0 +1,656 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `SneakerStore` DEFAULT CHARACTER SET utf8 ;
+USE `SneakerStore` ;
+
+-- -----------------------------------------------------
+-- Table `SneakerStore`.`Seller`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `SneakerStore`.`Seller` (
+  `Empid` INT NOT NULL,
+  `EmpName` NVARCHAR(45) NULL,
+  `Gender` INT NULL,
+  `Phone` VARCHAR(15) NULL,
+  `Address` NVARCHAR(45) NULL,
+  `UserName` VARCHAR(45) NULL,
+  `PassWord` VARCHAR(45) NULL,
+  PRIMARY KEY (`Empid`))
+ENGINE = InnoDB;
+ALTER TABLE  Seller ADD SALARY INT;
+
+
+-- -----------------------------------------------------
+-- Table `SneakerStore`.`ManagermentStaff`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `SneakerStore`.`ManagermentStaff` (
+  `Empid` INT NOT NULL,
+  `EmpName` NVARCHAR(45) NULL,
+  `Gender` INT NULL,
+  `Phone` VARCHAR(15) NULL,
+  `Address` NVARCHAR(45) NULL,
+  `UserName` VARCHAR(45) NULL,
+  `PassWord` VARCHAR(45) NULL,
+  PRIMARY KEY (`Empid`))
+ENGINE = InnoDB;
+ALTER TABLE ManagermentStaff ADD SALARY INT;
+
+-- -----------------------------------------------------
+-- Table `SneakerStore`.`Bill`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `SneakerStore`.`Bill` (
+  `Billid` INT NOT NULL,
+  `CreateAt` DATETIME NULL,
+  `State` NVARCHAR(45) NULL,
+  `Total` INT NULL,
+  `Seller_Empid` INT NULL,
+  PRIMARY KEY (`Billid`),
+  INDEX `fk_Bill_Seller_idx` (`Seller_Empid` ASC) VISIBLE,
+  CONSTRAINT `fk_Bill_Seller`
+    FOREIGN KEY (`Seller_Empid`)
+    REFERENCES `SneakerStore`.`Seller` (`Empid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `SneakerStore`.`Customer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `SneakerStore`.`Customer` (
+  `Customerid` INT NOT NULL,
+  `CustomerName` NVARCHAR(45) NULL,
+  `Gender` INT NULL,
+  `Phone` VARCHAR(15) NULL,
+  `Address` NVARCHAR(45) NULL,
+  `UserName` VARCHAR(45) NULL,
+  `PassWord` VARCHAR(45) NULL,
+  PRIMARY KEY (`Customerid`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `SneakerStore`.`Orders`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `SneakerStore`.`Orders` (
+  `Orderid` INT NOT NULL,
+  `CreateAt` DATETIME NULL,
+  `State` NVARCHAR(45) NULL,
+  `Total` INT NULL,
+  `Bill_Billid` INT NULL,
+  `Seller_Empid` INT NULL,
+  `Customer_Customerid` INT NULL,
+  PRIMARY KEY (`Orderid`),
+  INDEX `fk_Orders_Bill1_idx` (`Bill_Billid` ASC) VISIBLE,
+  INDEX `fk_Orders_Seller1_idx` (`Seller_Empid` ASC) VISIBLE,
+  INDEX `fk_Orders_Customer1_idx` (`Customer_Customerid` ASC) VISIBLE,
+  CONSTRAINT `fk_Orders_Bill1`
+    FOREIGN KEY (`Bill_Billid`)
+    REFERENCES `SneakerStore`.`Bill` (`Billid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Orders_Seller1`
+    FOREIGN KEY (`Seller_Empid`)
+    REFERENCES `SneakerStore`.`Seller` (`Empid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Orders_Customer1`
+    FOREIGN KEY (`Customer_Customerid`)
+    REFERENCES `SneakerStore`.`Customer` (`Customerid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `SneakerStore`.`Product`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `SneakerStore`.`Product` (
+  `Productid` INT NOT NULL,
+  `ProductName` NVARCHAR(45) NULL,
+  `ManufactureName` NVARCHAR(45) NULL,
+  `Price` INT NULL,
+  `Origin` NVARCHAR(45) NULL,
+  `Quantily` INT NULL,
+  `Size` INT NULL,
+  `ManagermentStaff_Empid` INT NULL,
+  PRIMARY KEY (`Productid`),
+  INDEX `fk_Product_ManagermentStaff1_idx` (`ManagermentStaff_Empid` ASC) VISIBLE,
+  CONSTRAINT `fk_Product_ManagermentStaff1`
+    FOREIGN KEY (`ManagermentStaff_Empid`)
+    REFERENCES `SneakerStore`.`ManagermentStaff` (`Empid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+ALTER TABLE Product ADD INVENTORYNUMBER INT;
+
+
+-- -----------------------------------------------------
+-- Table `SneakerStore`.`ProductSell`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `SneakerStore`.`ProductSell` (
+  `DateSell` DATETIME NOT NULL,
+  `Price` INT NULL,
+  `Quantily` INT NULL,
+  `Status` NVARCHAR(45) NULL,
+  `ManagermentStaff_Empid` INT NULL,
+  `Productid` INT NOT NULL,
+  PRIMARY KEY (`DateSell`, `Productid`),
+  INDEX `fk_ProductSell_ManagermentStaff1_idx` (`ManagermentStaff_Empid` ASC) VISIBLE,
+  INDEX `fk_ProductSell_Product1_idx` (`Productid` ASC) VISIBLE,
+  CONSTRAINT `fk_ProductSell_ManagermentStaff1`
+    FOREIGN KEY (`ManagermentStaff_Empid`)
+    REFERENCES `SneakerStore`.`ManagermentStaff` (`Empid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ProductSell_Product1`
+    FOREIGN KEY (`Productid`)
+    REFERENCES `SneakerStore`.`Product` (`Productid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+ALTER TABLE ProductSell ADD INVENTORYNUMBER INT;
+
+-- -----------------------------------------------------
+-- Table `SneakerStore`.`ProductCart`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `SneakerStore`.`ProductCart` (
+  `ProductSell_DateSell` DATETIME NOT NULL,
+  `ProductSell_Productid` INT NOT NULL,
+  `Customer_Customerid` INT NOT NULL,
+  `Amount` INT NULL,
+  PRIMARY KEY (`ProductSell_DateSell`, `ProductSell_Productid`, `Customer_Customerid`),
+  INDEX `fk_ProductSell_has_Customer_Customer1_idx` (`Customer_Customerid` ASC) VISIBLE,
+  INDEX `fk_ProductSell_has_Customer_ProductSell1_idx` (`ProductSell_DateSell` ASC, `ProductSell_Productid` ASC) VISIBLE,
+  CONSTRAINT `fk_ProductSell_has_Customer_ProductSell1`
+    FOREIGN KEY (`ProductSell_DateSell`)
+    REFERENCES `SneakerStore`.`ProductSell` (`DateSell`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ProductSell_has_Customer_Customer1`
+    FOREIGN KEY (`Customer_Customerid`)
+    REFERENCES `SneakerStore`.`Customer` (`Customerid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `SneakerStore`.`ProductOrder`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `SneakerStore`.`ProductOrder` (
+  `Orders_Orderid` INT NOT NULL,
+  `ProductSell_DateSell` DATETIME NOT NULL,
+  `ProductSell_Productid` INT NOT NULL,
+  `Amount` INT NULL,
+  PRIMARY KEY (`Orders_Orderid`, `ProductSell_DateSell`, `ProductSell_Productid`),
+  INDEX `fk_Orders_has_ProductSell_ProductSell1_idx` (`ProductSell_DateSell` ASC, `ProductSell_Productid` ASC) VISIBLE,
+  INDEX `fk_Orders_has_ProductSell_Orders1_idx` (`Orders_Orderid` ASC) VISIBLE,
+  CONSTRAINT `fk_Orders_has_ProductSell_Orders1`
+    FOREIGN KEY (`Orders_Orderid`)
+    REFERENCES `SneakerStore`.`Orders` (`Orderid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Orders_has_ProductSell_ProductSell1`
+    FOREIGN KEY (`ProductSell_DateSell`)
+    REFERENCES `SneakerStore`.`ProductSell` (`DateSell`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+INSERT INTO seller VALUES (1, 'Phạm Tú', 1, '0123456789', '125 Âu Dương Lân, Phường 2, Quận 8', 'ptu', 'ptu123', 10000000);
+INSERT INTO seller VALUES (2, 'Nguyễn Văn Nam', 1, '0321456789', '148 An Dương Vương, Phường 2, Quận 5', 'nvnam', 'nvnam123', 10000000);
+INSERT INTO seller VALUES (3, 'Lê Thị Trà My', 2, '032145549', '78 Nguyễn Trãi, Phường 5, Quận 5', 'lttmy', 'lttmy123', 10000000);
+
+INSERT INTO managermentStaff VALUES (4, 'Nguyễn Hoài An', 1, '0231456789', '178 Hùng Vương, Phường 9, Quận 5', 'nhan', 'nhan123', 20000000);
+INSERT INTO managermentStaff VALUES (5, 'Đinh Đình Hân', 1, '0231224549', '58 Nguyễn Chí Thanh, Phường 9, Quận 5', 'ddhan', 'ddhan123', 25000000);
+
+INSERT INTO bill VALUES (1, '2021-04-29', 'VN', 1000000, 1);
+INSERT INTO bill VALUES (2, '2021-03-15', 'VN', 1000000, 2);
+
+INSERT INTO customer VALUES (1, 'Phạm Văn Cương', 1, 0123456752, '100 Hưng Nam, phường 4, quận Tân Bình', 'pvcuong', 'pvcuong456');
+INSERT INTO customer VALUES (2, 'Đinh Thị Hồng Nhung', 2, 032456752, '152 Trần Hưng Đạo, phường 4, quận 1', 'dthnhung', 'dthnhung456');
+INSERT INTO customer VALUES (3, 'Nguyễn Thị Hoài Thanh', 2, 0213546752, '425 Nguyễn Trãi, phường 4, quận 5', 'nththanh', 'nththanh456');
+INSERT INTO customer VALUES (4, 'Lê Trọng Minh', 1, 021456712, '156 Cao Đạt, phường 4, quận 5', 'ltminh', 'ltminh456');
+
+INSERT INTO Orders VALUES (1, '2021-04-29', 'VN', 500000, 1, 1, 1);
+INSERT INTO Orders VALUES (2, '2021-04-29', 'VN', 500000, 1, 1, 1);
+INSERT INTO Orders VALUES (3, '2021-03-15', 'VN', 300000, 2, 2, 2);
+INSERT INTO Orders VALUES (4, '2021-03-15', 'VN', 700000, 2, 2, 2);
+
+INSERT INTO product VALUES (1, 'Yezzy 350', 'Tổng công ty Yezzy Việt Nam', 500000, 'Mỹ', 100, 41, 4, 99);
+INSERT INTO product VALUES (2, 'Adidas Boost', 'Tổng công ty Adidas Việt Nam', 300000, 'Pháp', 80, 42, 4, 79);
+INSERT INTO product VALUES (3, 'Yezzy 750', 'Tổng công ty Yezzy Việt Nam', 700000, 'Italia', 200, 41, 5, 199);
+INSERT INTO product VALUES (4, 'Biti Hunter', 'Tổng công ty Nike Việt Nam', 500000, 'Mỹ', 100, 40, 5, 99);
+
+INSERT INTO productsell VALUES ('2021-04-29', 500000, 1, 'Mới nguyên hộp', 4, 1, 99);
+INSERT INTO productsell VALUES ('2021-04-29', 500000, 1, 'Mới', 4, 4, 79);
+INSERT INTO productsell VALUES ('2021-03-15',300000, 1, 'Mới', 5, 2, 199);
+INSERT INTO productsell VALUES ('2021-03-15', 700000, 1, 'Mới', 5, 3, 99);
+
+INSERT INTO productorder VALUES (1, '2021-04-29', 1, 500000);
+INSERT INTO productorder VALUES (2, '2021-04-29', 4, 500000);
+INSERT INTO productorder VALUES (3, '2021-03-15', 2 ,300000);
+INSERT INTO productorder VALUES (4, '2021-03-15', 3, 700000);
+
+INSERT INTO productcart VALUES ('2021-04-29', 1, 1, 500000);
+INSERT INTO productcart VALUES ('2021-04-29', 2, 1, 500000);
+INSERT INTO productcart VALUES ('2021-03-15', 3, 2, 300000);
+INSERT INTO productcart VALUES ('2021-03-15', 4, 2, 700000);
+
+-- SELLER---------------------------------------------------------------------------------SELLER
+-- SEARCH SELLER
+DELIMITER $$
+CREATE PROCEDURE `SEARCH_SELLER` (EMPID INT)
+BEGIN
+SELECT * 
+FROM SELLER S 
+WHERE S.EMPID = EMPID;
+END$$
+-- CALL SEARCH_SELLER (1);
+
+-- ADD seller
+DROP procedure IF EXISTS `ADD_SELLER`;
+DELIMITER $$
+CREATE PROCEDURE `ADD_SELLER` (EMPID INT, EMPNAME NVARCHAR(45), GENDER INT, PHONE VARCHAR(15), ADDRESS NVARCHAR(45), USERNAME VARCHAR(45), PASSWORD VARCHAR(45))
+BEGIN
+INSERT INTO seller VALUES (EMPID, EMPNAME, GENDER, PHONE, ADDRESS, USERNAME, PASSWORD);
+END$$
+-- call ADD_SELLER( 10 , 'Phạm Tuân', 1, '0122443588', '124 Nguyễn Du', 'ptuan','ptuan123');
+
+-- SELECT seller
+DROP procedure IF EXISTS `SELECT_SELLER`;
+DELIMITER $$
+CREATE PROCEDURE `SELECT_SELLER` ()
+BEGIN
+SELECT * FROM SELLER;
+END$$
+-- CALL SELECT_SELLER;
+
+-- UPDATE SELLER
+DROP procedure IF EXISTS `UPDATE_SELLER`;
+DELIMITER $$
+CREATE PROCEDURE `UPDATE_SELLER` (EMP_ID INT, SAL INT)
+BEGIN
+UPDATE SELLER SET SALARY = SAL WHERE EMP_ID = EMPID;
+END$$
+-- CALL UPDATE_SELLER(1, 10000000);
+
+-- DELETE SELLER
+DROP procedure IF EXISTS `DELETE_SELLER`;
+DELIMITER $$
+CREATE PROCEDURE `DELETE_SELLER` (EMP_ID INT)
+BEGIN
+UPDATE BILL SET SELLER_EMPID = NULL WHERE SELLER_EMPID = EMP_ID;
+UPDATE ORDERS SET SELLER_EMPID = NULL WHERE SELLER_EMPID = EMP_ID;
+DELETE FROM SELLER WHERE EMPID = EMP_ID; 
+END$$
+-- CALL DELETE_SELLER(1);
+-- -------------------------------------------------------------------------------------------
+-- ------------------------------------------------------------------------------------------MANAGERMENTSTAFF
+DELIMITER $$
+CREATE PROCEDURE `SEARCH_MANAGERMENTSTAFF` (EMPID INT)
+BEGIN
+SELECT * 
+FROM SELLER S 
+WHERE S.EMPID = EMPID;
+END$$
+-- CALL SEARCH_MANAGERMENTSTAFF (4);
+
+-- ADD seller
+DROP procedure IF EXISTS `ADD_MANAGERMENTSTAFF`;
+DELIMITER $$
+CREATE PROCEDURE `ADD_MANAGERMENTSTAFF` (EMPID INT, EMPNAME NVARCHAR(45), GENDER INT, PHONE VARCHAR(15), ADDRESS NVARCHAR(45), USERNAME VARCHAR(45), PASSWORD VARCHAR(45))
+BEGIN
+INSERT INTO MANAGERMENTSTAFF VALUES (EMPID, EMPNAME, GENDER, PHONE, ADDRESS, USERNAME, PASSWORD);
+END$$
+-- call ADD_MANAGERMENTSTAFF( 20 , 'Đinh Hoàng', 1, '0122444588', '124 Nguyễn Du', 'dhoang','dhoang123');
+
+-- SELECT MANAGERMENTSTAFF
+DROP procedure IF EXISTS `SELECT_MANAGERMENTSTAFF`;
+DELIMITER $$
+CREATE PROCEDURE `SELECT_MANAGERMENTSTAFF` ()
+BEGIN
+SELECT * FROM MANAGERMENTSTAFF;
+END$$
+-- CALL SELECT_MANAGERMENTSTAFF;
+
+-- UPDATE MANAGERMENTSTAFF
+DROP procedure IF EXISTS `UPDATE_MANAGERMENTSTAFF`;
+DELIMITER $$
+CREATE PROCEDURE `UPDATE_MANAGERMENTSTAFF` (EMP_ID INT, SAL INT)
+BEGIN
+UPDATE MANAGERMENTSTAFF SET SALARY = SAL WHERE EMP_ID = EMPID;
+END$$
+-- CALL UPDATE_MANAGERMENTSTAFF(4, 10000000);
+
+-- DELETE MANAGERMENTSTAFF
+DROP procedure IF EXISTS `DELETE_MANAGERMENTSTAFF`;
+DELIMITER $$
+CREATE PROCEDURE `DELETE_MANAGERMENTSTAFF` (EMP_ID INT)
+BEGIN
+UPDATE PRODUCTSELL SET ManagermentStaff_Empid = NULL WHERE ManagermentStaff_Empid = EMP_ID;
+UPDATE PRODUCT SET ManagermentStaff_Empid = NULL WHERE ManagermentStaff_Empid;
+DELETE FROM MANAGERMENTSTAFF WHERE EMPID = EMP_ID; 
+END$$
+-- CALL DELETE_MANAGERMENTSTAFF(4);
+-- -------------------------------------------------------------------------------------------
+-- -------------------------------------------------------------------------------------------BILL
+DELIMITER $$
+CREATE PROCEDURE `SEARCH_BILL` (BILL_ID INT)
+BEGIN
+SELECT * 
+FROM BILL B
+WHERE B.BILLID = BILL_ID;
+END$$
+-- CALL SEARCH_BILL(1);
+
+DROP procedure IF EXISTS `ADD_BILL`;
+DELIMITER $$
+CREATE PROCEDURE `ADD_BILL` (BILLID INT, CREATEAT DATETIME, STATE NVARCHAR(45), TOTAL INT, SELLER_EMPID INT)
+BEGIN
+INSERT INTO BILL VALUES (BILLID, CREATEAT, STATE, TOTAL, SELLER_EMPID);
+END$$
+-- CALL ADD_BILL(3, '2021-1-1', 'VN', 800000, 10)
+
+DROP procedure IF EXISTS `SELECT_BILL`;
+DELIMITER $$
+CREATE PROCEDURE `SELECT_BILL` ()
+BEGIN
+SELECT * FROM BILL;
+END$$
+-- CALL SELECT_BILL;
+
+DROP procedure IF EXISTS `UPDATE_BILL`;
+DELIMITER $$
+CREATE PROCEDURE `UPDATE_BILL` (BILL_ID INT, NEW_TOTAL INT)
+BEGIN
+UPDATE BILL SET TOTAL = NEW_TOTAL WHERE BILLID = BILL_ID;
+END$$
+-- CALL UPDATE_BILL(1, 1000000);
+
+DROP procedure IF EXISTS `DELETE_BILL`;
+DELIMITER $$
+CREATE PROCEDURE `DELETE_BILL` (BILL_ID INT)
+BEGIN
+UPDATE ORDERS SET BILL_BILLID = NULL WHERE BILL_BILLID = BILL_ID;
+DELETE FROM BILL WHERE BILL = BILL_ID; 
+END$$
+-- CALL DELETE_BILL(1);
+
+-- ------------------------------------------------------------------------------ORDERS
+
+DELIMITER $$
+CREATE PROCEDURE `SEARCH_ORDERS` (ORDERS_ID INT)
+BEGIN
+SELECT * 
+FROM ORDERS O
+WHERE O.ORDERSID = ORDERS_ID ;
+END$$
+-- CALL SEARCH_ORDERS(1);
+
+DROP procedure IF EXISTS `ADD_ORDERS`;
+DELIMITER $$
+CREATE PROCEDURE `ADD_ORDERS` (ORDER_ID INT, CREATEAT DATETIME, STATE NVARCHAR(45), TOTAL INT, BILL_BILLID INT, SELLER_EMPID INT, CUSTOMER_CUSTOMERID INT)
+BEGIN
+INSERT INTO ORDERS VALUES (ORDER_ID, CREATEAT, STATE, TOTAL, BILL_BILLID, SELLER_EMPID, CUSTOMER_CUSTOMERID);
+END$$
+-- CALL ADD_ORDERS(5, '2021-04-30', 'US', 500000, 3, 2, 4);
+
+DROP procedure IF EXISTS `SELECT_ORDERS`;
+DELIMITER $$
+CREATE PROCEDURE `SELECT_ORDERS` ()
+BEGIN
+SELECT * FROM ORDERS;
+END$$
+-- CALL SELECT_ORDERS;
+
+DROP procedure IF EXISTS `UPDATE_ORDERS`;
+DELIMITER $$
+CREATE PROCEDURE `UPDATE_ORDERS` (ORDER_ID INT, NEW_TOTAL INT)
+BEGIN
+SET @B = (SELECT ORDERS.BILL_BILLID FROM ORDERS, BILL WHERE ORDERS.ORDERID = ORDER_ID AND BILL.BILLID = ORDERS.BILL_BILLID);
+SET @A = (SELECT ORDERS.TOTAL FROM ORDERS, BILL WHERE ORDERS.ORDERID = ORDER_ID AND BILL.BILLID = ORDERS.BILL_BILLID);
+UPDATE BILL SET TOTAL = NEW_TOTAL - @A + TOTAL WHERE BILLID = @B;
+UPDATE ORDERS SET TOTAL = NEW_TOTAL WHERE ORDERID = ORDER_ID;
+END$$
+-- CALL UPDATE_ORDERS(1, 500000);
+
+DELIMITER $$
+CREATE PROCEDURE `DELETE_ORDERS` (ORDER_ID INT)
+BEGIN
+SET @B = (SELECT ORDERS.BILL_BILLID FROM ORDERS, BILL WHERE ORDERS.ORDERID = ORDER_ID AND BILL.BILLID = ORDERS.BILL_BILLID);
+SET @A = (SELECT ORDERS.TOTAL FROM ORDERS, BILL WHERE ORDERS.ORDERID = ORDER_ID AND BILL.BILLID = ORDERS.BILL_BILLID);
+UPDATE BILL SET TOTAL = TOTAL - @A WHERE BILLID = @B;
+DELETE FROM PRODUCTORDER WHERE ORDERS_ORDERID = ORDER_ID; 
+DELETE FROM ORDERS WHERE ORDERID = ORDER_ID;
+END$$
+-- CALL DELETE_ORDERS(1);
+-- -------------------------------------------------------------------------------------------------------------------PRODUCT
+-- -------------------------------------------------------------------------------------------------------------------
+
+DELIMITER $$
+CREATE PROCEDURE `SEARCH_PRODUCT` (PRODUCT_ID INT)
+BEGIN
+SELECT *
+FROM PRODUCT P
+WHERE P.PRODUCTID = PRODUCT_ID ;
+END$$
+-- CALL SEARCH_PRODUCT(1);
+
+DROP procedure IF EXISTS `ADD_PRODUCT`;
+DELIMITER $$
+CREATE PROCEDURE `ADD_PRODUCT` (PRODUCT_ID INT, PRODUCT_NAME NVARCHAR(45), MANUFACTURE_NAME NVARCHAR(45), PRICE INT, ORIGIN NVARCHAR(45), QUANTILY INT, SIZE INT, MANAGERMENTSTAFF_EMPID INT ,INVENTORYNUMBER INT)
+BEGIN
+INSERT INTO PRODUCT VALUES (PRODUCT_ID, PRODUCT_NAME, MANUFACTURE_NAME, PRICE, ORIGIN, QUANTILY, SIZE, MANAGERMENTSTAFF_EMPID, INVENTORYNUMBER);
+END$$
+-- CALL ADD_PRODUCT(10, 'NIKE JORDAN', 'Tổng công ti Nike Việt Nam', 900000, 'Mỹ', 100, 41, 4, 100 );
+
+DROP procedure IF EXISTS `SELECT_PRODUCT`;
+DELIMITER $$
+CREATE PROCEDURE `SELECT_PRODUCT` ()
+BEGIN
+SELECT * FROM PRODUCT;
+END$$
+-- CALL SELECT_PRODUCT;
+
+DROP procedure IF EXISTS `UPDATE_PRODUCT`;
+DELIMITER $$
+CREATE PROCEDURE `UPDATE_PRODUCT` (PRODUCT_ID INT, NEW_PRICE INT)
+BEGIN
+UPDATE PRODUCT SET PRICE = NEW_PRICE WHERE PRODUCTID = PRODUCT_ID;
+END$$
+-- CALL UPDATE_PRODUCT(1, 500000);
+
+DROP procedure IF EXISTS `DELETE_PRODUCT`;
+DELIMITER $$
+CREATE PROCEDURE `DELETE_PRODUCT` (PRODUCT_ID INT)
+BEGIN
+DELETE FROM PRODUCTSELL WHERE PRODUCTID = PRODUCT_ID; 
+DELETE FROM PRODUCT WHERE PRODUCT = PRODUCT_ID;
+END$$
+-- CALL DELETE_PRODUCT(1);
+-- -------------------------------------------------------------------------------------------------------------------PRODUCTSELL
+-- -------------------------------------------------------------------------------------------------------------------
+
+
+DELIMITER $$
+CREATE PROCEDURE `SEARCH_PRODUCTSELL` (DATESELL DATETIME)
+BEGIN
+SELECT *
+FROM PRODUCTSELL PS
+WHERE PS.DATESELL = DATESELL ;
+END$$
+-- CALL SEARCH_PRODUCTSELL('2021-04-29');
+
+DROP procedure IF EXISTS `ADD_PRODUCTSELL`;
+DELIMITER $$
+CREATE PROCEDURE `ADD_PRODUCTSELL` (DATESELL DATETIME, PRICE INT, QUANTILY INT, STATUS NVARCHAR(45), MANAGERMENTSTAFF_EMPID INT, PRODUCTID INT, INVENTORYNUMBER INT)
+BEGIN
+INSERT INTO PRODUCTSELL VALUES (DATESELL, PRICE, QUANTILY, STATUS, MANAGERMENTSTAFF_EMPID, PRODUCTID, INVENTORYNUMBER);
+END$$
+-- CALL ADD_PRODUCTSELL('2021-05-01', 500000, 1, 'Moi', 4, 1, 98);
+
+DROP procedure IF EXISTS `SELECT_PRODUCT`;
+DELIMITER $$
+CREATE PROCEDURE `SELECT_PRODUCT` ()
+BEGIN
+SELECT * FROM PRODUCT;
+END$$
+-- CALL SELECT_PRODUCT;
+
+DROP procedure IF EXISTS `UPDATE_PRODUCTSELL`;
+DELIMITER $$
+CREATE PROCEDURE `UPDATE_PRODUCTSELL` (DATE_SELL DATETIME, NEW_PRICE INT)
+BEGIN
+UPDATE PRODUCTSELL SET PRICE = NEW_PRICE WHERE DATESELL = DATE_SELL;
+END$$
+-- CALL UPDATE_PRODUCTSELL('2021-04-29', 600000);
+
+DROP procedure IF EXISTS `DELETE_PRODUCTSELL`;
+DELIMITER $$
+CREATE PROCEDURE `DELETE_PRODUCTSELL` (DATE_SELL DATETIME, PRODUCT_ID INT )
+BEGIN
+DELETE FROM PRODUCTCART WHERE PRODUCTID = PRODUCT_ID AND DATE_SELL = DATESELL; 
+DELETE FROM PRODUCTSELL WHERE PRODUCTID = PRODUCT_ID AND DATETIME = DATE_SELL;
+END$$
+-- CALL DELETE_PRODUCTSELL('2021-04-29', 1);
+
+-- -------------------------------------------------------------------------------------------------------------------CUSTOMER
+-- -------------------------------------------------------------------------------------------------------------------
+
+DROP procedure IF EXISTS `SEARCH_CUSTOMER`;
+DELIMITER $$
+CREATE PROCEDURE `SEARCH_CUSTOMER` (CUSTOMER_ID INT)
+BEGIN
+SELECT *
+FROM CUSTOMER C
+WHERE C.CUSTOMERID = CUSTOMER_ID ;
+END$$
+-- CALL SEARCH_CUSTOMER(1);
+
+DROP procedure IF EXISTS `ADD_CUSTOMER`;
+DELIMITER $$
+CREATE PROCEDURE `ADD_CUSTOMER` (CUSTOMER_ID INT, CUSTOMER_NAME NVARCHAR(45), GENDER INT, PHONE NVARCHAR(15), ADDRESS NVARCHAR(45), USERNAME VARCHAR(45), PASSWORD VARCHAR(45))
+BEGIN
+INSERT INTO CUSTOMER VALUES (CUSTOMER_ID, CUSTOMER_NAME, GENDER, PHONE, ADDRESS, USERNAME, PASSWORD);
+END$$
+-- CALL ADD_CUSTOMER(10, 'Doan Van Thai', 1, '052456785', '36 Nguyen Hue', 'dvthai', 'dvthai456');
+
+DROP procedure IF EXISTS `SELECT_CUSTOMER`;
+DELIMITER $$
+CREATE PROCEDURE `SELECT_CUSTOMER` ()
+BEGIN
+SELECT * FROM CUSTOMER;
+END$$
+-- CALL SELECT_CUSTOMER;
+
+DROP procedure IF EXISTS `UPDATE_CUSTOMER`;
+DELIMITER $$
+CREATE PROCEDURE `UPDATE_CUSTOMER` (CUSTOMER_ID INT, NEW_PASSWORD VARCHAR(45))
+BEGIN
+UPDATE CUSTOMER SET PASSWORD = NEW_PASSWORD WHERE CUSTOMERID = CUSTOMER_ID;
+END$$
+-- CALL UPDATE_CUSTOMER(1, '123456');
+
+DROP procedure IF EXISTS `DELETE_CUSTOMER`;
+DELIMITER $$
+CREATE PROCEDURE `DELETE_CUSTOMER` (CUSTOMER_ID INT)
+BEGIN
+DELETE FROM PRODUCTCART WHERE CUSTOMER_CUSTOMERID = CUSTOMER_ID;
+UPDATE ORDERS SET CUSTOMER_CUSTOMERID = NULL WHERE CUSTOMER_CUSTOMERID = CUSTOMER_ID;
+DELETE FROM CUSTOMER WHERE CUSTOMERID = CUSTOMER_ID;
+END$$
+-- CALL DELETE_CUSTOMER(1);
+
+-- -------------------------------------------------------------------------------------------------------------------PRODUCTCART
+-- -------------------------------------------------------------------------------------------------------------------
+
+DROP procedure IF EXISTS `SEARCH_PRODUCTCART`;
+DELIMITER $$
+CREATE PROCEDURE `SEARCH_PRODUCTCART` (PRODUCTSELL_PRODUCTID INT)
+BEGIN
+SELECT *
+FROM PRODUCTCART P
+WHERE P.PRODUCTSELL_PRODUCTID = PRODUCTSELL_PRODUCTID ;
+END$$
+-- CALL SEARCH_PRODUCTCART(1);
+
+DROP procedure IF EXISTS `ADD_PRODUCTCART`;	
+DELIMITER $$
+CREATE PROCEDURE `ADD_PRODUCTCART` (PRODUCTSELL_DATESELL DATETIME, PRODUCTSELL_PRODUCTID INT, CUSTOMER_CUSTOMERID INT, AMOUNT INT)
+BEGIN
+INSERT INTO PRODUCTCART VALUES (PRODUCTSELL_DATESELL, PRODUCTSELL_PRODUCTID, CUSTOMER_CUSTOMERID, AMOUNT);
+END$$
+-- CALL ADD_PRODUCTCART('2021-05-01', 1, 1, 500000 );
+
+DROP procedure IF EXISTS `SELECT_PRODUCTCART`;
+DELIMITER $$
+CREATE PROCEDURE `SELECT_PRODUCTCART` ()
+BEGIN
+SELECT * FROM PRODUCTCART;
+END$$
+-- CALL SELECT_PRODUCTCART;
+
+
+DROP procedure IF EXISTS `DELETE_PRODUCTCART`;
+DELIMITER $$
+CREATE PROCEDURE `DELETE_PRODUCTCART` (PRODUCTSELLDATESELL DATETIME, PRODUCTSELLPRODUCTID INT, CUSTOMERCUSTOMERID INT)
+BEGIN
+DELETE FROM PRODUCTCART WHERE PRODUCTSELL_DATESELL = PRODUCTSELLDATESELL AND PRODUCTSELL_PRODUCTID = PRODUCTSELLPRODUCTID AND CUSTOMER_CUSTOMERID = CUSTOMERCUSTOMERID;
+END$$
+-- CALL DELETE_PRODUCTCART('2021-03-15', 4, 2);
+
+-- -------------------------------------------------------------------------------------------------------------------PRODUCTORDER
+-- -------------------------------------------------------------------------------------------------------------------
+
+DROP procedure IF EXISTS `SEARCH_PRODUCTORDER`;
+DELIMITER $$
+CREATE PROCEDURE `SEARCH_PRODUCTORDER` (PRODUCT_ID INT)
+BEGIN
+SELECT *
+FROM  PRODUCTORDER P
+WHERE P.PRODUCTSELL_PRODUCTID = PRODUCT_ID ;
+END$$
+-- CALL SEARCH_PRODUCTORDER(1);
+
+DROP procedure IF EXISTS `ADD_PRODUCTORDER`;
+DELIMITER $$
+CREATE PROCEDURE `ADD_PRODUCTORDER` (ORDERS_ORDERID INT, PRODUCTSELL_DATESELL DATETIME, PRODUCTSELL_PRODUCTID INT, AMOUNT INT)
+BEGIN
+INSERT INTO PRODUCTORDER VALUES (ORDERS_ORDERID, PRODUCTSELL_DATESELL, PRODUCTSELL_PRODUCTID, AMOUNT);
+END$$
+-- CALL ADD_PRODUCTORDER(5, '2021-05-01', 1, 500000);
+
+DROP procedure IF EXISTS `SELECT_PRODUCTORDER`;
+DELIMITER $$
+CREATE PROCEDURE `SELECT_PRODUCTORDER` ()
+BEGIN
+SELECT * FROM PRODUCTORDER;
+END$$
+-- CALL SELECT_PRODUCTORDER;
+
+
+DROP procedure IF EXISTS `DELETE_PRODUCTORDER`;
+DELIMITER $$
+CREATE PROCEDURE `DELETE_PRODUCTORDER` (ORDERSORDERID INT, PRODUCTSELLDATESELL DATETIME, PRODUCTSELLPRODUCTID INT)
+BEGIN
+DELETE FROM PRODUCTORDER WHERE ORDERS_ORDERID = ORDERSORDERID AND PRODUCTSELL_DATESELL = PRODUCTSELLDATESELL AND PRODUCTSELL_PRODUCTID = PRODUCTSELLPRODUCTID;
+END$$
+-- CALL DELETE_PRODUCTORDER(4, '2021-03-15', 3);
