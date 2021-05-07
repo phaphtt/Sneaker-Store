@@ -1,0 +1,214 @@
+- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `SneakerStore` DEFAULT CHARACTER SET utf8 ;
+USE `SneakerStore` ;
+
+-- -----------------------------------------------------
+-- Table `SneakerStore`.`Seller`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `SneakerStore`.`Seller` (
+  `Empid` INT NOT NULL,
+  `EmpName` NVARCHAR(45) NULL,
+  `Gender` INT NULL,
+  `Phone` VARCHAR(15) NULL,
+  `Address` NVARCHAR(45) NULL,
+  `UserName` VARCHAR(45) NULL,
+  `PassWord` VARCHAR(45) NULL,
+  PRIMARY KEY (`Empid`))
+ENGINE = InnoDB;
+ALTER TABLE  Seller ADD SALARY INT;
+
+
+-- -----------------------------------------------------
+-- Table `SneakerStore`.`ManagermentStaff`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `SneakerStore`.`ManagermentStaff` (
+  `Empid` INT NOT NULL,
+  `EmpName` NVARCHAR(45) NULL,
+  `Gender` INT NULL,
+  `Phone` VARCHAR(15) NULL,
+  `Address` NVARCHAR(45) NULL,
+  `UserName` VARCHAR(45) NULL,
+  `PassWord` VARCHAR(45) NULL,
+  PRIMARY KEY (`Empid`))
+ENGINE = InnoDB;
+ALTER TABLE ManagermentStaff ADD SALARY INT;
+
+-- -----------------------------------------------------
+-- Table `SneakerStore`.`Bill`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `SneakerStore`.`Bill` (
+  `Billid` INT NOT NULL,
+  `CreateAt` DATETIME NULL,
+  `State` NVARCHAR(45) NULL,
+  `Total` INT NULL,
+  `Seller_Empid` INT NULL,
+  PRIMARY KEY (`Billid`),
+  INDEX `fk_Bill_Seller_idx` (`Seller_Empid` ASC) VISIBLE,
+  CONSTRAINT `fk_Bill_Seller`
+    FOREIGN KEY (`Seller_Empid`)
+    REFERENCES `SneakerStore`.`Seller` (`Empid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `SneakerStore`.`Customer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `SneakerStore`.`Customer` (
+  `Customerid` INT NOT NULL,
+  `CustomerName` NVARCHAR(45) NULL,
+  `Gender` INT NULL,
+  `Phone` VARCHAR(15) NULL,
+  `Address` NVARCHAR(45) NULL,
+  `UserName` VARCHAR(45) NULL,
+  `PassWord` VARCHAR(45) NULL,
+  PRIMARY KEY (`Customerid`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `SneakerStore`.`Orders`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `SneakerStore`.`Orders` (
+  `Orderid` INT NOT NULL,
+  `CreateAt` DATETIME NULL,
+  `State` NVARCHAR(45) NULL,
+  `Total` INT NULL,
+  `Bill_Billid` INT NULL,
+  `Seller_Empid` INT NULL,
+  `Customer_Customerid` INT NULL,
+  PRIMARY KEY (`Orderid`),
+  INDEX `fk_Orders_Bill1_idx` (`Bill_Billid` ASC) VISIBLE,
+  INDEX `fk_Orders_Seller1_idx` (`Seller_Empid` ASC) VISIBLE,
+  INDEX `fk_Orders_Customer1_idx` (`Customer_Customerid` ASC) VISIBLE,
+  CONSTRAINT `fk_Orders_Bill1`
+    FOREIGN KEY (`Bill_Billid`)
+    REFERENCES `SneakerStore`.`Bill` (`Billid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Orders_Seller1`
+    FOREIGN KEY (`Seller_Empid`)
+    REFERENCES `SneakerStore`.`Seller` (`Empid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Orders_Customer1`
+    FOREIGN KEY (`Customer_Customerid`)
+    REFERENCES `SneakerStore`.`Customer` (`Customerid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `SneakerStore`.`Product`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `SneakerStore`.`Product` (
+  `Productid` INT NOT NULL,
+  `ProductName` NVARCHAR(45) NULL,
+  `ManufactureName` NVARCHAR(45) NULL,
+  `Price` INT NULL,
+  `Origin` NVARCHAR(45) NULL,
+  `Quantily` INT NULL,
+  `Size` INT NULL,
+  `ManagermentStaff_Empid` INT NULL,
+  PRIMARY KEY (`Productid`),
+  INDEX `fk_Product_ManagermentStaff1_idx` (`ManagermentStaff_Empid` ASC) VISIBLE,
+  CONSTRAINT `fk_Product_ManagermentStaff1`
+    FOREIGN KEY (`ManagermentStaff_Empid`)
+    REFERENCES `SneakerStore`.`ManagermentStaff` (`Empid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+ALTER TABLE Product ADD INVENTORYNUMBER INT;
+
+
+-- -----------------------------------------------------
+-- Table `SneakerStore`.`ProductSell`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `SneakerStore`.`ProductSell` (
+  `DateSell` DATETIME NOT NULL,
+  `Price` INT NULL,
+  `Quantily` INT NULL,
+  `Status` NVARCHAR(45) NULL,
+  `ManagermentStaff_Empid` INT NULL,
+  `Productid` INT NOT NULL,
+  PRIMARY KEY (`DateSell`, `Productid`),
+  INDEX `fk_ProductSell_ManagermentStaff1_idx` (`ManagermentStaff_Empid` ASC) VISIBLE,
+  INDEX `fk_ProductSell_Product1_idx` (`Productid` ASC) VISIBLE,
+  CONSTRAINT `fk_ProductSell_ManagermentStaff1`
+    FOREIGN KEY (`ManagermentStaff_Empid`)
+    REFERENCES `SneakerStore`.`ManagermentStaff` (`Empid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ProductSell_Product1`
+    FOREIGN KEY (`Productid`)
+    REFERENCES `SneakerStore`.`Product` (`Productid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+ALTER TABLE ProductSell ADD INVENTORYNUMBER INT;
+
+-- -----------------------------------------------------
+-- Table `SneakerStore`.`ProductCart`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `SneakerStore`.`ProductCart` (
+  `ProductSell_DateSell` DATETIME NOT NULL,
+  `ProductSell_Productid` INT NOT NULL,
+  `Customer_Customerid` INT NOT NULL,
+  `Amount` INT NULL,
+  PRIMARY KEY (`ProductSell_DateSell`, `ProductSell_Productid`, `Customer_Customerid`),
+  INDEX `fk_ProductSell_has_Customer_Customer1_idx` (`Customer_Customerid` ASC) VISIBLE,
+  INDEX `fk_ProductSell_has_Customer_ProductSell1_idx` (`ProductSell_DateSell` ASC, `ProductSell_Productid` ASC) VISIBLE,
+  CONSTRAINT `fk_ProductSell_has_Customer_ProductSell1`
+    FOREIGN KEY (`ProductSell_DateSell`)
+    REFERENCES `SneakerStore`.`ProductSell` (`DateSell`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ProductSell_has_Customer_Customer1`
+    FOREIGN KEY (`Customer_Customerid`)
+    REFERENCES `SneakerStore`.`Customer` (`Customerid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `SneakerStore`.`ProductOrder`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `SneakerStore`.`ProductOrder` (
+  `Orders_Orderid` INT NOT NULL,
+  `ProductSell_DateSell` DATETIME NOT NULL,
+  `ProductSell_Productid` INT NOT NULL,
+  `Amount` INT NULL,
+  PRIMARY KEY (`Orders_Orderid`, `ProductSell_DateSell`, `ProductSell_Productid`),
+  INDEX `fk_Orders_has_ProductSell_ProductSell1_idx` (`ProductSell_DateSell` ASC, `ProductSell_Productid` ASC) VISIBLE,
+  INDEX `fk_Orders_has_ProductSell_Orders1_idx` (`Orders_Orderid` ASC) VISIBLE,
+  CONSTRAINT `fk_Orders_has_ProductSell_Orders1`
+    FOREIGN KEY (`Orders_Orderid`)
+    REFERENCES `SneakerStore`.`Orders` (`Orderid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Orders_has_ProductSell_ProductSell1`
+    FOREIGN KEY (`ProductSell_DateSell`)
+    REFERENCES `SneakerStore`.`ProductSell` (`DateSell`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

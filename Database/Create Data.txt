@@ -1,0 +1,39 @@
+INSERT INTO seller VALUES (1, 'Phạm Tú', 1, '0123456789', '125 Âu Dương Lân, Phường 2, Quận 8', 'ptu', 'ptu123', 10000000);
+INSERT INTO seller VALUES (2, 'Nguyễn Văn Nam', 1, '0321456789', '148 An Dương Vương, Phường 2, Quận 5', 'nvnam', 'nvnam123', 10000000);
+INSERT INTO seller VALUES (3, 'Lê Thị Trà My', 2, '032145549', '78 Nguyễn Trãi, Phường 5, Quận 5', 'lttmy', 'lttmy123', 10000000);
+
+INSERT INTO managermentStaff VALUES (4, 'Nguyễn Hoài An', 1, '0231456789', '178 Hùng Vương, Phường 9, Quận 5', 'nhan', 'nhan123', 20000000);
+INSERT INTO managermentStaff VALUES (5, 'Đinh Đình Hân', 1, '0231224549', '58 Nguyễn Chí Thanh, Phường 9, Quận 5', 'ddhan', 'ddhan123', 25000000);
+
+INSERT INTO bill VALUES (1, '2021-04-29', 'VN', 1000000, 1);
+INSERT INTO bill VALUES (2, '2021-03-15', 'VN', 1000000, 2);
+
+INSERT INTO customer VALUES (1, 'Phạm Văn Cương', 1, 0123456752, '100 Hưng Nam, phường 4, quận Tân Bình', 'pvcuong', 'pvcuong456');
+INSERT INTO customer VALUES (2, 'Đinh Thị Hồng Nhung', 2, 032456752, '152 Trần Hưng Đạo, phường 4, quận 1', 'dthnhung', 'dthnhung456');
+INSERT INTO customer VALUES (3, 'Nguyễn Thị Hoài Thanh', 2, 0213546752, '425 Nguyễn Trãi, phường 4, quận 5', 'nththanh', 'nththanh456');
+INSERT INTO customer VALUES (4, 'Lê Trọng Minh', 1, 021456712, '156 Cao Đạt, phường 4, quận 5', 'ltminh', 'ltminh456');
+
+INSERT INTO Orders VALUES (1, '2021-04-29', 'VN', 500000, 1, 1, 1);
+INSERT INTO Orders VALUES (2, '2021-04-29', 'VN', 500000, 1, 1, 1);
+INSERT INTO Orders VALUES (3, '2021-03-15', 'VN', 300000, 2, 2, 2);
+INSERT INTO Orders VALUES (4, '2021-03-15', 'VN', 700000, 2, 2, 2);
+
+INSERT INTO product VALUES (1, 'Yezzy 350', 'Tổng công ty Yezzy Việt Nam', 500000, 'Mỹ', 100, 41, 4, 99);
+INSERT INTO product VALUES (2, 'Adidas Boost', 'Tổng công ty Adidas Việt Nam', 300000, 'Pháp', 80, 42, 4, 79);
+INSERT INTO product VALUES (3, 'Yezzy 750', 'Tổng công ty Yezzy Việt Nam', 700000, 'Italia', 200, 41, 5, 199);
+INSERT INTO product VALUES (4, 'Biti Hunter', 'Tổng công ty Nike Việt Nam', 500000, 'Mỹ', 100, 40, 5, 99);
+
+INSERT INTO productsell VALUES ('2021-04-29', 500000, 1, 'Mới nguyên hộp', 4, 1, 99);
+INSERT INTO productsell VALUES ('2021-04-29', 500000, 1, 'Mới', 4, 4, 79);
+INSERT INTO productsell VALUES ('2021-03-15',300000, 1, 'Mới', 5, 2, 199);
+INSERT INTO productsell VALUES ('2021-03-15', 700000, 1, 'Mới', 5, 3, 99);
+
+INSERT INTO productorder VALUES (1, '2021-04-29', 1, 500000);
+INSERT INTO productorder VALUES (2, '2021-04-29', 4, 500000);
+INSERT INTO productorder VALUES (3, '2021-03-15', 2 ,300000);
+INSERT INTO productorder VALUES (4, '2021-03-15', 3, 700000);
+
+INSERT INTO productcart VALUES ('2021-04-29', 1, 1, 500000);
+INSERT INTO productcart VALUES ('2021-04-29', 2, 1, 500000);
+INSERT INTO productcart VALUES ('2021-03-15', 3, 2, 300000);
+INSERT INTO productcart VALUES ('2021-03-15', 4, 2, 700000);
